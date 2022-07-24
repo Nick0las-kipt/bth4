@@ -1,0 +1,18 @@
+identifier: nrf52_smaq2
+name: nRF52-SMAQ2
+type: mcu
+arch: arm
+ram: 64
+flash: 512
+toolchain:
+  - zephyr
+  - gnuarmemb
+  - xtools
+supported:
+  - adc
+  - counter
+  - nvs
+  - i2c
+  - pwm
+  - spi
+  - watchdog

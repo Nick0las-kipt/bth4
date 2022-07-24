@@ -1,0 +1,4 @@
+config  BOARD_NRF52_SMAQ2
+	bool "nRF52 SMAQ2"
+	select GPIO
+	depends on SOC_NRF52832_QFAA

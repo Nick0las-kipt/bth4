@@ -1,0 +1,15 @@
+title: Vishay light and color sensor VEML3328
+
+description: |
+    This binding gives a base representation of the VEML3328
+    light and color sensor
+
+compatible: "vishay,veml3328"
+
+include: i2c-device.yaml
+
+properties:
+    lux_mul:
+      type: int
+      required: false
+      default: 30

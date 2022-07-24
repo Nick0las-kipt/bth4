@@ -1,0 +1,238 @@
+/*
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/dts-v1/;
+
+#include <nordic/nrf52832_qfaa.dtsi>
+
+/ {
+    model = "Nordic SMA Q2";
+    compatible = "nordic,sma-q2";
+
+    chosen {
+        zephyr,console = &uart0;
+        zephyr,shell-uart = &uart0;
+        zephyr,bt-mon-uart = &uart0;
+        zephyr,bt-c2h-uart = &uart0;
+        zephyr,sram = &sram0;
+        zephyr,flash = &flash0;
+        zephyr,code-partition = &slot0_partition;
+    };
+
+    /* These aliases are provided for compatibility with samples */
+    aliases {
+        sw0 = &button0;
+        watchdog0 = &wdt0;
+    };
+
+    buttons {
+        compatible = "gpio-keys";
+        button0: button_back {
+            gpios = <&gpio0 9 GPIO_PULL_UP>;
+            label = "Button back";
+        };
+        button1: button_enter {
+            gpios = <&gpio0 28 GPIO_PULL_UP>;
+            label = "Button enter";
+        };
+        button2: button_up {
+            gpios = <&gpio0 27 GPIO_PULL_UP>;
+            label = "Button up";
+        };
+        button3: button_down {
+            gpios = <&gpio0 29 GPIO_PULL_UP>;
+            label = "Button down";
+        };
+    };
+    backlight {
+        compatible = "led-lcd-bl";
+        // gpios = <&gpio0 8 0>;
+        pwms = <&pwm0 8>;
+        label = "LPMBL";
+    };
+    sensor-power-gpio {
+        compatible = "pwr-en-gpio";
+        gpios = <&gpio0 31 0>;
+        label = "Sensor PWR";
+    };
+
+    charger_gpio: charger_gpio0 {
+        compatible = "charger-gpio";
+        charge-gpios = <&gpio0 23 GPIO_ACTIVE_LOW>;
+        power-good-gpios = <&gpio0 24 GPIO_ACTIVE_LOW>;
+        label = "Battery charger";
+    };
+
+    vbat-adc-mon {
+        compatible = "adc-vbat";
+        adcs = <&adc>;
+        gain_nom = < 1 >;
+        gain_denom = < 2 >;
+        channel = < 3 >;
+        multiplyer = <4800>;
+        shift = <12>;
+        label = "Battery_monitor";
+    };
+
+    i2c_gpio {
+        clock-frequency = <I2C_BITRATE_STANDARD>;
+        compatible = "gpio-i2c";
+        sda-gpios = <&gpio0 19 (GPIO_SINGLE_ENDED | GPIO_OPEN_DRAIN) >;
+        scl-gpios = <&gpio0 20 (GPIO_SINGLE_ENDED | GPIO_OPEN_DRAIN) >;
+        status = "okay";
+        label = "SENSOR_I2C";
+        #address-cells = <1>;
+        #size-cells = <0>;
+        ms5803@77 {
+            compatible = "meas,ms5xxx";
+            reg = <0x77>;
+            label = "MS5803";
+            model_num = <5803>;
+        };
+        sht21@40 {
+            compatible = "sensirion,sht2x";
+            reg = <0x40>;
+            label = "SHT21";
+        };
+        veml3328@10 {
+            compatible = "vishay,veml3328";
+            reg = <0x10>;
+            label = "VEML3328";
+        };
+    };
+};
+
+&adc {
+    status = "okay";
+    #adc-cells = <0>;
+};
+
+&gpiote {
+    status = "okay";
+};
+
+&gpio0 {
+    status = "okay";
+};
+
+&uart0 {
+    status = "okay";
+    compatible = "nordic,nrf-uart";
+    current-speed = <921600>;
+    tx-pin = <25>;
+    /* rx-pin = <26>; */
+};
+
+/*&i2c0 {
+    clock-frequency = <I2C_BITRATE_FAST>;
+    compatible = "nordic,nrf-twim";
+    sda-pin = <19>;
+    scl-pin = <20>;
+    status = "okay";
+    ms5803@77 {
+        compatible = "meas,ms5xxx";
+        reg = <0x77>;
+        label = "MS5803";
+        model_num = <5803>;
+    };
+    sht21@40 {
+        compatible = "sensirion,sht2x";
+        reg = <0x40>;
+        label = "SHT21";
+    };
+    veml3328@10 {
+        compatible = "vishay,veml3328";
+        reg = <0x10>;
+        label = "VEML3328";
+    };
+};*/
+
+&i2c1 {
+/*    status = "okay"; */
+    clock-frequency = <I2C_BITRATE_FAST>;
+    compatible = "nordic,nrf-twim";
+    sda-pin = <17>;
+    scl-pin = <18>;
+};
+
+
+&pwm0 {
+    status = "okay";
+    ch0-pin = <8>;
+    #pwm-cells = <1>;
+};
+
+&pwm1 {
+    status = "okay";
+    ch0-pin = <6>;
+};
+
+&spi2 {
+    compatible = "nordic,nrf-spim";
+    status = "okay";
+    sck-pin = <2>;
+    mosi-pin = <3>;
+    miso-pin = <11>;
+    label = "SPI_2";
+    lpm013mc126@0 {
+        compatible = "jdi,lpm013m126";
+        reg = <0>;
+        spi-max-frequency = <4000000>;
+        label = "LPM_0";
+        width = <176>;
+        height = <176>;
+        cs-gpios = <&gpio0 5 0>;
+        disp-gpios = <&gpio0 7 0>;
+        extcom-gpios = <&gpio0 6 0>;
+        #pwm-cells = <1>;
+        // pwms = <&pwm1 6>;
+    };        
+};
+
+
+&flash0 {
+    /*
+     * If chosen's zephyr,code-partition
+     * is unset, the image will be linked
+     * into the entire flash device.  If
+     * it points to an individual
+     * partition, the code will be linked
+     * to, and restricted to that
+     * partition.
+     */
+    partitions {
+        compatible = "fixed-partitions";
+        #address-cells = <1>;
+        #size-cells = <1>;
+
+        boot_partition: partition@0 {
+            label = "mcuboot";
+            reg = <0x00000000 0xc000>;
+        };
+        slot0_partition: partition@c000 {
+            label = "image-0";
+            reg = <0x0000C000 0x32000>;
+        };
+        slot1_partition: partition@3e000 {
+            label = "image-1";
+            reg = <0x0003E000 0x32000>;
+        };
+        scratch_partition: partition@70000 {
+            label = "image-scratch";
+            reg = <0x00070000 0xa000>;
+        };
+
+        /*
+         * The flash starting at 0x0007a000 and ending at
+         * 0x0007ffff (sectors 122-127) is reserved for use
+         * by the application. If enabled, partition for NFFS
+         * will be created in this area.
+         */
+        storage_partition: partition@7a000 {
+            label = "storage";
+            reg = <0x0007a000 0x00006000>;
+        };
+    };
+};

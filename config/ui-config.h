@@ -1,0 +1,51 @@
+#ifndef UI_CONFIG_H
+#define UI_CONFIG_H
+
+#define UI_PRESENT 1
+#define USE_LARGER_FONT 1
+
+#define COL_3_BLACK    0
+#define COL_3_RED      4
+#define COL_3_YELLOW   6
+#define COL_3_GREEN    2
+#define COL_3_CYAN     3
+#define COL_3_BLUE     1
+#define COL_3_MAGENTA  5
+#define COL_3_WHITE    7
+
+#define COL_MENU_BKG         COL_3_BLACK
+#define COL_MENU_TEXT_BACK   COL_3_GREEN
+#define COL_MENU_TEXT_FRONT  COL_3_BLACK
+#define COL_MENU_SEL_BACK    COL_3_YELLOW
+#define COL_MENU_SEL_FRONT   COL_3_BLUE
+
+#define COL_STATUSBAR_FRONT  COL_3_BLACK
+#define COL_STATUSBAR_BACK   COL_3_WHITE
+
+#define COL_INFOBAR_FRONT    COL_3_BLACK
+#define COL_INFOBAR_BACK     COL_3_WHITE
+
+#define COL_INFOBAR_TEMP     COL_3_RED
+#define COL_INFOBAR_RH       COL_3_GREEN
+#define COL_INFOBAR_PRES     COL_3_BLUE
+
+
+#define COL_PASSKEY_FRONT    COL_3_WHITE
+#define COL_PASSKEY_BACK     COL_3_RED
+
+#define COL_DCLOCK_FRONT     COL_3_WHITE
+#define COL_DCLOCK_BACK      COL_3_BLACK
+
+#define DEF_MENU_PAD 6
+
+#if USE_LARGER_FONT
+#define MIN_LINE_DO (CCHAR_H + 2)
+#define MAX_LINE_DO (DISP_H - CCHAR_H - 2)
+#else
+#define MIN_LINE_DO CCHAR_H
+#define MAX_LINE_DO (DISP_H - CCHAR_H)
+#endif
+
+#define LIGHT_BAR_GAP 4
+
+#endif

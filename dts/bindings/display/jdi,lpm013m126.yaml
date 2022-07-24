@@ -1,0 +1,33 @@
+title: JDI Memory LCD
+
+description: >
+    This is a LMP***m** display accessed through SPI bus,
+    polarity controlled by PWM or GPIO
+
+compatible: "jdi,lpm013m126"
+
+include: spi-device.yaml
+
+properties:
+    cs-gpios:
+      type: phandle-array
+      required: true
+    disp-gpios:
+      type: phandle-array
+      required: true
+    extcom-gpios:
+      type: phandle-array
+      required: false
+    pwms:
+      type: phandle-array
+      required: false
+    "#pwm-cells":
+      type: int
+      required: false
+      const: 1      
+    width:
+      type: int
+      required: true
+    height:
+      type: int
+      required: true

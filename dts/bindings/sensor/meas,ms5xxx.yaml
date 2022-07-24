@@ -1,0 +1,14 @@
+title: TE Connectivity digital pressure sensor MS5611, MS5803 or MS5837
+
+description: |
+    This binding gives a base representation of the MS5611, MS5803 or MS5837 digital pressure
+    sensor
+
+compatible: "meas,ms5xxx"
+
+include: i2c-device.yaml
+
+properties:
+    model_num:
+      type: int
+      required: false

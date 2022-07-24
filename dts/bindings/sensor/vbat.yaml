@@ -1,0 +1,34 @@
+title: Battery Voltage sensor
+
+description: ADC based battery voltage sensor. Result = (counts*multiplyer) >> shift in mV
+
+compatible: "adc-vbat"
+
+properties:
+        adcs:
+          type: phandle-array
+          required: true
+        gain_nom:
+          type: int
+          required: true             
+        gain_denom:
+          type: int
+          required: false
+          default: 0
+        channel:
+          type: int
+          required: true             
+        multiplyer:
+          type: int
+          required: true
+        shift:
+          type: int
+          required: true
+        period:
+          type: int
+          required: false
+          default: 10000          
+        label:
+          type: string
+          required: false
+          description: Human readable string describing the device (used by Zephyr for API name)

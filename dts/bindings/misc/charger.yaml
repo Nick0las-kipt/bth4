@@ -1,0 +1,17 @@
+title: Battery charger GPIO
+
+description: GPIO showing battery charger status
+
+compatible: "charger-gpio"
+
+properties:
+        charge-gpios:
+          type: phandle-array
+          required: true
+        power-good-gpios:
+          type: phandle-array
+          required: true
+        label:
+          type: string
+          required: false
+          description: Human readable string describing the device (used by Zephyr for API name)

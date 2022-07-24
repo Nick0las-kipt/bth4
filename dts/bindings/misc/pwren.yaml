@@ -1,0 +1,14 @@
+title: Power enable GPIO
+
+description: This GPIO would be set to 1 at startup
+
+compatible: "pwr-en-gpio"
+
+properties:
+        gpios:
+          type: phandle-array
+          required: true
+        label:
+          type: string
+          required: false
+          description: Human readable string describing the device (used by Zephyr for API name)

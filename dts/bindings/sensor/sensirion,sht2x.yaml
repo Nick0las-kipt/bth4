@@ -1,0 +1,9 @@
+title: Sensirion humidity and temperature sensor SHT20, SHT21 or SHT25
+
+description: |
+    This binding gives a base representation of the  SHT20, SHT21 or SHT25
+    humidity and temperature sensor
+
+compatible: "sensirion,sht2x"
+
+include: i2c-device.yaml

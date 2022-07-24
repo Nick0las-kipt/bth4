@@ -1,0 +1,42 @@
+if BOARD_NRF52_SMAQ2
+
+config BOARD
+	default "nrf52_smaq2"
+
+config SPI
+	default y
+
+config I2C
+	default y
+
+if SPI
+
+config SPI_2
+	default y
+
+config SOC_NRF52832_ALLOW_SPIM_DESPITE_PAN_58
+	default y
+
+config SPI_ASYNC
+	default  y
+
+endif # SPI
+
+config I2C
+	default n
+
+if I2C
+
+#uncomment if HW i2c needed
+#config I2C_0
+#	default y
+
+#config I2C_1
+#	default y
+
+endif # I2C
+
+config BT_CTLR
+	default BT
+
+endif # BOARD_NRF52_SMAQ2
