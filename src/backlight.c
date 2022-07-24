@@ -10,7 +10,10 @@
 #include <logging/log.h>
 LOG_MODULE_REGISTER(backlight);
 
-#ifdef DT_INST_0_LED_LCD_BL
+
+#define BL_NODE DT_NODELABEL(backlight)
+#define BL_NAME DT_LABEL(BL_NODE)
+#if DT_NODE_EXISTS(BL_NODE)
 
 #define BL_PRIORITY          0
 #define BL_STACKSIZE         512
@@ -134,30 +137,30 @@ int lcd_is_bl_on(){
 
 void lcd_bl_init(void)
 {
-#ifdef DT_LED_LCD_BL_BACKLIGHT_GPIOS_CONTROLLER    
-    lcd_bl_gpio_dev = device_get_binding(DT_LED_LCD_BL_BACKLIGHT_GPIOS_CONTROLLER);
+#if DT_NODE_EXISTS(DT_PROP(BL_NODE, gpios))    
+    lcd_bl_gpio_dev = device_get_binding(DT_GPIO_LABEL(BL_NODE, gpios));
 #endif
     if (!(lcd_bl_gpio_dev)){
         LOG_INF("LCD BL GPIO not found!");
     } else {
-#ifdef DT_LED_LCD_BL_BACKLIGHT_GPIOS_PIN        
-        lcd_bl_pin = DT_LED_LCD_BL_BACKLIGHT_GPIOS_PIN;
-#endif 
+#if DT_NODE_EXISTS(DT_PROP(BL_NODE, gpios)) 
+        lcd_bl_pin = DT_GPIO_PIN(BL_NODE, gpios);
         int ret;
         if ((ret = gpio_pin_configure(lcd_bl_gpio_dev, lcd_bl_pin, GPIO_OUTPUT)) < 0){
             LOG_ERR("BL pin config error %d!", ret);
             return;
-        }           
+        }
+#endif   
     }
-#ifdef DT_LED_LCD_BL_BACKLIGHT_PWMS_CONTROLLER
-    lcd_bl_pwm_dev = device_get_binding(DT_LED_LCD_BL_BACKLIGHT_PWMS_CONTROLLER);
+#if DT_NODE_EXISTS(DT_PROP(BL_NODE, pwms))
+    lcd_bl_pwm_dev = device_get_binding(DT_PWMS_LABEL(BL_NODE));
 #endif
     if (!(lcd_bl_pwm_dev)){
         LOG_INF("LCD BL PWM not found!");
     } else {
-#ifdef DT_LED_LCD_BL_BACKLIGHT_PWMS_CHANNEL        
-        lcd_bl_pin = DT_LED_LCD_BL_BACKLIGHT_PWMS_CHANNEL;
-#endif        
+#if DT_NODE_EXISTS(DT_PROP(BL_NODE, pwms))
+        lcd_bl_pin = DT_PWMS_CHANNEL(BL_NODE);
+#endif
     }
 
     lcd_bl_set_timeout_ms(DEFAULT_BL_TIMEOUT_MS);

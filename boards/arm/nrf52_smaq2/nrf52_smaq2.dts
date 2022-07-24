@@ -46,7 +46,7 @@
             label = "Button down";
         };
     };
-    backlight {
+    backlight: backlight0 {
         compatible = "led-lcd-bl";
         // gpios = <&gpio0 8 0>;
         pwms = <&pwm0 8>;
@@ -161,7 +161,6 @@
 &pwm0 {
     status = "okay";
     ch0-pin = <8>;
-    #pwm-cells = <1>;
 };
 
 &pwm1 {
