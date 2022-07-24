@@ -13,27 +13,16 @@ typedef struct button_pin_s {
 
 } button_pin_t;
 
+#define BUTTON_INSTANCE(button_name) \
+    { DT_GPIO_PIN(DT_NODELABEL(button_name), gpios), \
+        DT_GPIO_FLAGS(DT_NODELABEL(button_name), gpios) \
+    },
+
 static button_pin_t buttons_matrix[] = {
-#ifdef  DT_GPIO_KEYS_BUTTON_BACK_GPIOS_PIN
-    { DT_GPIO_KEYS_BUTTON_BACK_GPIOS_PIN,
-        DT_GPIO_KEYS_BUTTON_BACK_GPIOS_FLAGS
-    },
-#endif
-#ifdef  DT_GPIO_KEYS_BUTTON_ENTER_GPIOS_PIN
-    { DT_GPIO_KEYS_BUTTON_ENTER_GPIOS_PIN,
-        DT_GPIO_KEYS_BUTTON_ENTER_GPIOS_FLAGS
-    },
-#endif
-#ifdef  DT_GPIO_KEYS_BUTTON_UP_GPIOS_PIN
-    { DT_GPIO_KEYS_BUTTON_UP_GPIOS_PIN,
-        DT_GPIO_KEYS_BUTTON_UP_GPIOS_FLAGS
-    },
-#endif
-#ifdef  DT_GPIO_KEYS_BUTTON_DOWN_GPIOS_PIN
-    { DT_GPIO_KEYS_BUTTON_DOWN_GPIOS_PIN,
-        DT_GPIO_KEYS_BUTTON_DOWN_GPIOS_FLAGS
-    },
-#endif
+    BUTTON_INSTANCE(button_back)
+    BUTTON_INSTANCE(button_enter)
+    BUTTON_INSTANCE(button_up)
+    BUTTON_INSTANCE(button_down)
 };
 
 #define NUM_BUTTONS (sizeof(buttons_matrix)/sizeof(buttons_matrix[0]))
@@ -122,7 +111,7 @@ void buttons_set_listener(k_tid_t _wake_tid){
 
 K_TIMER_DEFINE(buttons_timer, buttons_timer_handler, NULL);
 
-void button_event(struct device *gpiob, struct gpio_callback *cb,
+void button_event(const struct device *gpiob, struct gpio_callback *cb,
             uint32_t pin)
 {
     LOG_DBG("Trigger pin %x", pin);
@@ -134,10 +123,10 @@ static struct gpio_callback gpio_cb;
 
 void buttons_init(void)
 {
-    gpio_buttons = device_get_binding(DT_GPIO_KEYS_BUTTON_BACK_GPIOS_CONTROLLER);
+    gpio_buttons = device_get_binding(DT_GPIO_LABEL(DT_NODELABEL(button_back), gpios));
 
     if (!gpio_buttons) {
-        LOG_ERR("Could not find controller \"%s\"", DT_GPIO_KEYS_BUTTON_BACK_GPIOS_CONTROLLER);
+        LOG_ERR("Could not find controller \"%s\"", DT_GPIO_LABEL(DT_NODELABEL(button_back), gpios));
         return;
     }
     uint32_t mask = 0;
