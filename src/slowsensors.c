@@ -9,6 +9,7 @@
 #include "slowsensors.h"
 #include "graph.h"
 #include "sensorlog.h"
+#include "ui-config.h"
 #include "bt.h"
 #include <bluetooth/services/bas.h>
 
