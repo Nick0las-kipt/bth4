@@ -51,7 +51,7 @@ uint8_t strCpyL(char *dst,const char *src,uint8_t maxlen){
   char c;
   do{
     c=*src++;
-    *dst++=c;
+    dst[i]=c;
     ++i;
   }while ((i<maxlen)&&(c));
   if (i >= maxlen) dst[maxlen] = 0;
