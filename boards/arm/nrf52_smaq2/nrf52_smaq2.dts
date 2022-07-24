@@ -52,7 +52,7 @@
         pwms = <&pwm0 8>;
         label = "LPMBL";
     };
-    sensor-power-gpio {
+    poweron: sensor-power-gpio {
         compatible = "pwr-en-gpio";
         gpios = <&gpio0 31 0>;
         label = "Sensor PWR";

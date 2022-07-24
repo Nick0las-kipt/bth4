@@ -4,16 +4,19 @@
 #include <drivers/gpio.h>
 #include <init.h>
 
+#define PWR_NODE DT_NODELABEL(poweron)
+#define PWR_NAME DT_LABEL(PWR_NODE)
 
-#ifdef DT_INST_0_PWR_EN_GPIO_GPIOS_CONTROLLER
+#if DT_NODE_EXISTS(PWR_NODE)
 
 static int pwr_en_gpio_init(struct device * dptr){
      (void) dptr;
-     struct device * pwr_en_gpio_dev = device_get_binding(DT_INST_0_PWR_EN_GPIO_GPIOS_CONTROLLER);
+     struct device * pwr_en_gpio_dev = device_get_binding(DT_GPIO_LABEL(PWR_NODE, gpios));
      if (pwr_en_gpio_dev){
-        gpio_pin_configure(pwr_en_gpio_dev, DT_INST_0_PWR_EN_GPIO_GPIOS_PIN, 
-              GPIO_OUTPUT | DT_PWR_EN_GPIO_SENSOR_POWER_GPIO_GPIOS_FLAGS);
-        gpio_pin_set(pwr_en_gpio_dev, DT_INST_0_PWR_EN_GPIO_GPIOS_PIN, 1);
+        const int pin = DT_GPIO_PIN(PWR_NODE, gpios);
+        gpio_pin_configure(pwr_en_gpio_dev, pin, 
+              GPIO_OUTPUT | DT_GPIO_FLAGS(PWR_NODE, gpios));
+        gpio_pin_set(pwr_en_gpio_dev, pin, 1);
      }
      return 0;
 }
