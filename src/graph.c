@@ -550,7 +550,7 @@ static void graphDisplay(int ymin, int ymax, gr_tickdata_t ticks, gr_labeldata_t
                     minidig_put_line_4bit_stream(&linedata[lineBase], &lineOfs, &colVal, bottomlabel[pd], yForLabel, (cs->textFcol)<<1, (cs->textBcol)<<1);
                 }
             } else if (yForLabel == MINI_DIG_H){
-                memset (linedata, COLC(cs->textBcol,cs->textBcol), DISP_W + 2);
+                memset (&linedata[lineBase], COLC(cs->textBcol,cs->textBcol), DISP_W / 2);
             }
         }
         lcd_wait_async();
